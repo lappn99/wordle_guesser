@@ -76,7 +76,7 @@ fn main(){
                                 }
                 
                             },
-                            CharacterStatus::InWord => rank += 2,
+                            CharacterStatus::InWord => rank += 3,
                             CharacterStatus::NotInWord => rank += -10
                         }
                     } else {
