@@ -64,14 +64,23 @@ fn main(){
                 let mut rank = 0;
                 //Rank word by the status of each character 
                 //Can tweak these rankings
-                for (_, c) in word.char_indices() {
+                for (i, c) in word.char_indices() {
                     if alphabet_status.contains_key(&c) {
                         
                         match alphabet_status.get(&c).unwrap() {
-                            CharacterStatus::CorrectPosition(_) => rank += 5,
-                            CharacterStatus::InWord => rank += 3,
-                            CharacterStatus::NotInWord => rank -=1
+                            CharacterStatus::CorrectPosition(index) => rank += {
+                                if *index == i {
+                                    5
+                                } else {
+                                    2
+                                }
+                
+                            },
+                            CharacterStatus::InWord => rank += 2,
+                            CharacterStatus::NotInWord => rank += -10
                         }
+                    } else {
+                        rank += 1
                     }
                 }
                 word_rankings.insert(word.clone(),rank);
