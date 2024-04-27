@@ -62,7 +62,8 @@ fn main(){
 
             for word in available_words {
                 let mut rank = 0;
-                
+                //Rank word by the status of each character 
+                //Can tweak these rankings
                 for (_, c) in word.char_indices() {
                     if alphabet_status.contains_key(&c) {
                         
@@ -75,9 +76,8 @@ fn main(){
                 }
                 word_rankings.insert(word.clone(),rank);
                 
-                
-                
             }
+            //Pick word with highest ranking
             word_rankings.iter()
                 .max_by(|a, b| a.1.cmp(&b.1)).unwrap().0.to_string()
             
@@ -85,15 +85,17 @@ fn main(){
 
         println!("guess: {}", guess);
         
-        
-
+        //Goes through each letter and updates its "Alphabet status"
         for (i, c) in guess.char_indices() {
+            //If character in answer word
             if word.contains(c) {
+                //Create entry for it
                 let entry = alphabet_status.entry(c).or_insert({
                     if let Some(index) = word.find(c) {
+                        //Same position
                         if index == i {
                             CharacterStatus::CorrectPosition(i)
-                        } else {
+                        } else { //Not in same position
                             CharacterStatus::InWord
                         }
 
@@ -103,6 +105,8 @@ fn main(){
                     
                 });
 
+                //If the letter is known to be in the word and its correct position is now found, update the character status
+                //Obviously the reverse would not be true
                 if *entry == CharacterStatus::InWord && word.find(c).unwrap() == i {
                     *entry = CharacterStatus::CorrectPosition(i);
                 }
